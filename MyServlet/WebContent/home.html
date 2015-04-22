@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+#q{
+	text-align: center;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}table{
+	width:75%
+}
+th, td {
+	text-align: center;
+	width: 100px;
+    padding: 15px;
+}.inc{
+	background-color:gray;
+    text-align: center;
+    padding: 25px;
+    width: 100px;
+    padding-bottom:5px; 
+    margin: auto;
+}#incMonth{
+	margin-left:75%; 
+}#decMonth{
+	float: left;
+	margin-right:75%; 
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	printCalender();
+	//runEffects();
+	$("#incMonth").click(increaseMonth);
+	$("#decMonth").click(decreaseMonth);
+	
+});
+function runEffects() {
+	$(".day").on({
+	    mouseenter: function(){
+	        $(this).css("background-color", "#9900CC");
+	    }, 
+	    mouseleave: function(){
+	        $(this).css("background-color", "white");
+	    }, 
+	    click: function(){
+	        alert(this.id);
+	    } 
+	});
+}
+function loadXMLDoc()
+{
+var xmlhttp,XMLdoc,txt;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+	  XMLdoc = xmlhttp.responseXML;
+	  alert(XMLdoc);
+	  var x=xmlDoc.getElementsByTagName("task")[0];
+	  
+	  <!--document.getElementById("myDiv").innerHTML = x.getElementsByTagName("title");
+    <!--document.getElementById("myDiv").innerHTML=xmlhttp.responseText; -->
+    }
+  }
+xmlDoc.open("GET","Data.xml",true);
+xmlDoc.send();
+}
+var TODAY = new Date();
+var date = new Date();
+function printCalender(){
+	//document.getElementById("calender").innerHTML = "";
+	month_names = new Array("January","February","March","April","May","June","July",
+			"August","September","October","November","December");
+		day_names = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+		var tempDate = date;
+		tempDate.setDate(1);
+
+		var firstDay = tempDate.getDay();
+		var DayCount = 1,totalDays;
+		var Days = tempDate.getMonth();
+			<!--Find total days in this month -->
+			if(Days == 0 ||Days == 2 ||Days == 4 ||	Days == 6 ||Days == 7 ||Days == 9 || Days == 11){
+				totalDays = 31;
+			}else if(Days == 3 || Days == 5 || Days == 8 || Days == 10){
+				totalDays = 30;
+			}else if(Days == 1 && tempDate.getFullYear()%4 == 0 && (tempDate.getFullYear()%100 != 0 || tempDate.getFullYear()%400 == 0) ){
+				totalDays = 29;
+			}else{totalDays = 28;}
+			
+		document.getElementById("q").innerHTML = '<br> '+ month_names[tempDate.getMonth()]+"  " + tempDate.getFullYear() + '<br> &nbsp;';
+		
+		if(tempDate.getMonth() != TODAY.getMonth() || tempDate.getFullYear() != TODAY.getFullYear() ){
+			document.getElementById("q").innerHTML += '<button type="button" onclick="jumpThisMonth()">Jump to this month</button>';
+		}
+		
+		var myTable = "";
+		
+		myTable += '<table align = "center"><tr>';
+			for (i=0;i<7;i++){ 
+				myTable +=  '<th bgcolor="#DCDDD9"><b>'+day_names[i] + '</b></th>';
+			}
+			myTable += "</tr><tr>";
+			for (i=0;i<7;i++){ 
+				  
+				  if(i < firstDay ){
+					  myTable += "<td>";
+					  myTable += "&nbsp;";
+				  }else{
+					  myTable += '<td class="day" id = "' +DayCount+ '"">';
+					  myTable += DayCount;
+				  	DayCount++;
+				  }
+				  myTable += "</td>";
+				}
+			myTable += "</tr><tr>";
+			for (i=1;true;i++){
+				myTable += "<tr>";
+				for (j=1;j<=7;j++,DayCount++){ 
+				  if(DayCount > totalDays){
+					  myTable += "<td>";
+					  myTable += "&nbsp;";
+				  }else{
+					  myTable += '<td class="day" id = "' +DayCount+ '"">';
+					  myTable += DayCount;
+				  }
+				  
+				  myTable += "</td>";
+				}
+				myTable += "</tr>";
+			 	if(DayCount > totalDays){
+					 break;
+				  }
+			}
+			myTable += '</table>';
+			//document.getElementById("calender").innerHTML += myTable
+			$("#calender").html(myTable);
+			runEffects();
+} 
+function increaseMonth(){
+	var tempMonth = date.getMonth()+1;
+	date.setMonth(tempMonth);
+	printCalender();
+}
+function jumpThisMonth(){
+	date = new Date();
+	printCalender();
+}
+var decreaseMonth = function(){
+	var tempMonth = date.getMonth()-1;
+	date.setMonth(tempMonth);
+	printCalender();
+}
+	
+
+</script>
+</head>
+
+<body>
+<div  id = q> </div>
+<div  id = decMonth class = inc>  &lt;&lt;</div>
+<div  id = incMonth class = inc>  &gt;&gt; </div>
+<div id = "calender" ></div>
+
+<div id="myDiv"><h2>Let AJAX change this text</h2></div>
+<button type="button" onclick="loadXMLDoc()">Change Content</button>
+
+
+
+</body>
+</html>

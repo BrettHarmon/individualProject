@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	
+	for(var i = 1; i < 8; i++){
+		document.getElementById("Div2").innerHTML += '<div class="a" id="x'+i+'">Enter this paragraph.</div><br>';
+	}
+	$("div.a").hover(
+		function(){
+	        $(this).css("background-color", "lightgray");
+	        $(this).text(this.id);
+	    },
+	    function(){
+	    	$(this).css("background-color", "white");
+	    	$(this).text("Enter this paragraph.");
+	    }
+	);
+    $("#ButtOne").click(function(){
+        $.ajax({url: "ajax_info.txt", success: function(result){
+            $("#myDiv").html(result);
+            
+        }});
+    });
+});
+
+
+
+/*
+function loadXMLDoc(){	
+	var xmlhttp;
+	xmlhttp=new XMLHttpRequest();
+	
+	xmlhttp.open("GET","ajax_info.txt",true);
+	xmlhttp.send();
+	
+	if( xmlhttp !== null){
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	    	document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+	    }
+	  }
+	}else{
+		alert("Update your browser to support HTTP requests");
+	}
+}
+*/
+</script>
+</head>
+<body>
+<div id="Div2">Yes</div>
+<div id="myDiv"><h2>Let AJAX change this text</h2></div>
+<button id = "ButtOne" >Change Content</button>
+
+</body>
+</html>

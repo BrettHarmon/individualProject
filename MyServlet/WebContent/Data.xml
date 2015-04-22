@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Year PUBLIC "SYSTEM" "TaskList.dtd">
+<task>
+	<year>2015</year>
+	<month>4</month>
+	<day>8</day>
+	<title>Get groceries</title>
+	<description>We have to go to the grocery store and get some food</description>
+</task>
+<task>
+	<year>2015</year>
+	<month>4</month>
+	<day>8</day>
+	<title>Put groceries away</title>
+	<description>We just got some food, we have to put it away</description>
+</task>
+<task>
+	<year>2015</year>
+	<month>4</month>
+	<day>10</day>
+	<title>Milestone 2</title>
+	<description>Better make sure you have 33% of things done</description>
+</task>
