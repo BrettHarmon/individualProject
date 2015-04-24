@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Year PUBLIC "SYSTEM" "TaskList.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE body
+[
+<!ELEMENT task (year,month,day,title,description)>
+<!ELEMENT year (#PCDATA)>
+<!ELEMENT month (#PCDATA)>
+<!ELEMENT day (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+]>
+<body>
 <task>
 	<year>2015</year>
 	<month>4</month>
@@ -20,3 +30,4 @@
 	<title>Milestone 2</title>
 	<description>Better make sure you have 33% of things done</description>
 </task>
+</body>

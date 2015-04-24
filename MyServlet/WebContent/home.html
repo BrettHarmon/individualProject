@@ -32,9 +32,10 @@ th, td {
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>
+var TODAY = new Date();
+var date = new Date();
 $(document).ready(function(){
 	printCalender();
-	//runEffects();
 	$("#incMonth").click(increaseMonth);
 	$("#decMonth").click(decreaseMonth);
 	
@@ -48,36 +49,69 @@ function runEffects() {
 	        $(this).css("background-color", "white");
 	    }, 
 	    click: function(){
-	        alert(this.id);
+	    	var id = this.id
+    	    $.ajax({
+    	    	type:"POST", 
+    	    	url: "Data.xml", 
+    	    	dataType: "xml", 
+    	    	success: function(result){
+	    	    	//Ajax call when day pressed
+	    	    	
+	    	   		
+	    	        printTaskList(id,date.getMonth(),date.getFullYear(),result);
+	    	    	//alert("success");
+    	   		}
+    	    });
 	    } 
 	});
 }
-function loadXMLDoc()
-{
-var xmlhttp,XMLdoc,txt;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	xmlhttp=new XMLHttpRequest();
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-	  XMLdoc = xmlhttp.responseXML;
-	  alert(XMLdoc);
-	  var x=xmlDoc.getElementsByTagName("task")[0];
-	  
-	  <!--document.getElementById("myDiv").innerHTML = x.getElementsByTagName("title");
-    <!--document.getElementById("myDiv").innerHTML=xmlhttp.responseText; -->
-    }
-  }
-xmlDoc.open("GET","Data.xml",true);
-xmlDoc.send();
+
+function ajaxDebug(){
+	
+	 $.ajax({
+    	type:"GET", 
+    	url: "ajax_info.txt", 
+    	dataType: "text", 
+    	success: function(result){
+    		$("#myDiv").html(result);
+   		}
+	 
+	 }); 
 }
-var TODAY = new Date();
-var date = new Date();
+
+function printTaskList(d,m,y,result){
+	m=m+1;
+	 $(".inc").hide();
+	document.getElementById("q").innerHTML = '<br> '+ m+"/" + d+"/"+ y+ '<br> &nbsp;';
+	document.getElementById("q").innerHTML += '<button type="button" onclick="printCalender()">back to calender</button>';
+	document.getElementById("calender").innerHTML = '';
+	document.getElementById("myDiv").innerHTML = '';
+	var taskTxt = '';
+	//boolean if atleast 1 event occured
+	var GTOneTask = false;
+	//for each task...
+	$(result).find('task').each(function(){
+		//print all tasks that fall on this date
+		if($(this).find('day').text() == d && $(this).find('year').text() == y && $(this).find('month').text() == m){
+			GTOneTask = true;
+			var title = $(this).find('title').text();
+			var desc = $(this).find('description').text();
+			
+			var txt = '<ul><li><b>'+title+'</b></li>';
+			txt += '<li>' + desc +'</li></ul>';
+
+	        $("#calender").append(txt);
+		}
+        
+    });
+	if(!GTOneTask){
+		$("#calender").append("<br><br>Nothing planned today <br> Make some new plans by clicking <b>'new task'</b><br><br>");
+	}
+	$("#calender").append('<br><button type="button" onclick="alert(\'TODO\')">New task</button>');
+}
+
+
 function printCalender(){
-	//document.getElementById("calender").innerHTML = "";
 	month_names = new Array("January","February","March","April","May","June","July",
 			"August","September","October","November","December");
 		day_names = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
@@ -101,7 +135,7 @@ function printCalender(){
 		if(tempDate.getMonth() != TODAY.getMonth() || tempDate.getFullYear() != TODAY.getFullYear() ){
 			document.getElementById("q").innerHTML += '<button type="button" onclick="jumpThisMonth()">Jump to this month</button>';
 		}
-		
+		$(".inc").show();
 		var myTable = "";
 		
 		myTable += '<table align = "center"><tr>';
@@ -170,8 +204,10 @@ var decreaseMonth = function(){
 <div  id = incMonth class = inc>  &gt;&gt; </div>
 <div id = "calender" ></div>
 
-<div id="myDiv"><h2>Let AJAX change this text</h2></div>
-<button type="button" onclick="loadXMLDoc()">Change Content</button>
+<div id="myDiv"></div>
+
+<!-- AJAX DEBUGGER -->
+<!--<button type="button" onclick="ajaxDebug()">How Broken Is AJAX</button> -->
 
 
 
