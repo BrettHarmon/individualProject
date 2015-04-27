@@ -52,7 +52,8 @@ function runEffects() {
 	    	var id = this.id
     	    $.ajax({
     	    	type:"POST", 
-    	    	url: "Data.xml", 
+    	    	url: './getDataAjax', 
+    	    	data: { location: "/Data.xml" },
     	    	dataType: "xml", 
     	    	success: function(result){
 	    	    	//Ajax call when day pressed
@@ -207,7 +208,7 @@ var decreaseMonth = function(){
 <div id="myDiv"></div>
 
 <!-- AJAX DEBUGGER -->
-<!--<button type="button" onclick="ajaxDebug()">How Broken Is AJAX</button> -->
+<button type="button" onclick="ajaxDebug()">How Broken Is AJAX</button>
 
 
 
