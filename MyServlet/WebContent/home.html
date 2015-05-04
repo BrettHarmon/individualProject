@@ -52,15 +52,13 @@ function runEffects() {
 	    	var id = this.id
     	    $.ajax({
     	    	type:"POST", 
-    	    	url: './getDataAjax', 
+    	    	url: '/planner/getDataAjax/', 
     	    	data: { location: "/Data.xml" },
     	    	dataType: "xml", 
     	    	success: function(result){
 	    	    	//Ajax call when day pressed
-	    	    	
-	    	   		
 	    	        printTaskList(id,date.getMonth(),date.getFullYear(),result);
-	    	    	//alert("success");
+	    	    	alert("success");
     	   		}
     	    });
 	    } 
@@ -110,6 +108,18 @@ function printTaskList(d,m,y,result){
 	}
 	$("#calender").append('<br><button type="button" onclick="alert(\'TODO\')">New task</button>');
 }
+/*  TODO:
+function newTask(d,m,y,result){
+	var text = '';
+	text += "<form action=' '>
+			'<br>Task title: <input type="text" name="FirstName" value="Title"><br>'
+			'Task description: <textarea name="myTextBox" cols="50" rows="5"> Enter some text... </textarea><br><br>'
+			'<input type="submit" value="Submit"><br><br>'
+			'</form>";
+	$("#calender").append(text);
+	
+}*/
+
 
 
 function printCalender(){

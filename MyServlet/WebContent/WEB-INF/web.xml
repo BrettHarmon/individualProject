@@ -12,9 +12,19 @@
     <servlet-name>getDataAjax</servlet-name>
     <servlet-class>net.codejava.getDataAjax</servlet-class>
 </servlet>
+<servlet>
+    <servlet-name>writeXML</servlet-name>
+    <servlet-class>net.codejava.WriteDataXML</servlet-class>
+</servlet>
+
+
 <servlet-mapping>
     <servlet-name>getDataAjax</servlet-name>
     <url-pattern>/getDataAjax/</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>writeXML</servlet-name>
+    <url-pattern>/writeXML/</url-pattern>
 </servlet-mapping>
 
    <welcome-file-list>
