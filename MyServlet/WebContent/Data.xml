@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE body
-[
-<!ELEMENT task (year,month,day,title,description)>
+<!DOCTYPE body [<!ELEMENT task (year,month,day,title,description)>
 <!ELEMENT year (#PCDATA)>
 <!ELEMENT month (#PCDATA)>
 <!ELEMENT day (#PCDATA)>
@@ -9,25 +7,13 @@
 <!ELEMENT description (#PCDATA)>
 ]>
 <body>
-<task>
-	<year>2015</year>
-	<month>4</month>
-	<day>8</day>
-	<title>Get groceries</title>
-	<description>We have to go to the grocery store and get some food</description>
+<task><year>2015</year><month>4</month><day>8</day><title>Get groceries</title><description>We have to go to the grocery store and get some food</description>
 </task>
-<task>
-	<year>2015</year>
-	<month>4</month>
-	<day>8</day>
-	<title>Put groceries away</title>
-	<description>We just got some food, we have to put it away</description>
+<task><year>2015</year><month>4</month><day>8</day><title>Put groceries away</title><description>We just got some food, we have to put it away</description>
 </task>
-<task>
-	<year>2015</year>
-	<month>4</month>
-	<day>10</day>
-	<title>Milestone 2</title>
-	<description>Better make sure you have 33% of things done</description>
+<task><year>2015</year><month>4</month><day>10</day><title>Milestone 2</title><description>Better make sure you have 33% of things done</description>
 </task>
-</body>
+<task><year>2015</year><month>4</month><day>8</day><title>This task has no description</title><description/>
+</task>
+<task><year>2015</year><month>4</month><day>8</day><title>Task with long description</title><description>Lorem ipsum dolor sit amet, luctus vestibulum enim metus a, pellentesque rutrum turpis duis nec, egestas at wisi justo, amet ante integer ipsum sapien. Nulla ut fusce volutpat pellentesque, dolor id lacus sed dolor, phasellus nullam curabitur consequat rhoncus, aenean omnis ullamcorper cum tristique.</description>
+</task></body>

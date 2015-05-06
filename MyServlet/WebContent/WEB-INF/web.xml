@@ -16,6 +16,10 @@
     <servlet-name>writeXML</servlet-name>
     <servlet-class>net.codejava.WriteDataXML</servlet-class>
 </servlet>
+<servlet>
+    <servlet-name>removeXML</servlet-name>
+    <servlet-class>net.codejava.RemoveXML</servlet-class>
+</servlet>
 
 
 <servlet-mapping>
@@ -25,6 +29,10 @@
 <servlet-mapping>
     <servlet-name>writeXML</servlet-name>
     <url-pattern>/writeXML/</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>removeXML</servlet-name>
+    <url-pattern>/removeXML/</url-pattern>
 </servlet-mapping>
 
    <welcome-file-list>

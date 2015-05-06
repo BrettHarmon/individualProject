@@ -8,7 +8,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(8080);
+		Server server = new Server(8081);
 
 		// Create and register a webapp context
 		WebAppContext handler = new WebAppContext();
@@ -21,7 +21,7 @@ public class Main {
 		
 		// Start the server
 		server.start();
-		System.out.println("connect with 'http://localhost:8080/planner/'");
+		System.out.println("connect with 'http://localhost:8081/planner/'");
 		
 		// Wait for the user to type "quit"
 		System.out.println("Web server started, type quit to shut down");
@@ -38,6 +38,7 @@ public class Main {
 		server.join();
 		System.out.println("Server has shut down, exiting");
 		keyboard.close();
+		
 	}
 }
 

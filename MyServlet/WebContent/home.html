@@ -50,21 +50,23 @@ function runEffects() {
 	    }, 
 	    click: function(){
 	    	var id = this.id
-    	    $.ajax({
-    	    	type:"POST", 
-    	    	url: '/planner/getDataAjax/', 
-    	    	data: { location: "/Data.xml" },
-    	    	dataType: "xml", 
-    	    	success: function(result){
-	    	    	//Ajax call when day pressed
-	    	        printTaskList(id,date.getMonth(),date.getFullYear(),result);
-	    	    	alert("success");
-    	   		}
-    	    });
+	    	ajaxTaskList(id);
 	    } 
 	});
 }
 
+//run ajax through specialized function for getting task list
+function ajaxTaskList(id){
+	$.ajax({
+    	type:"POST", 
+    	url: '/planner/getDataAjax/', 
+    	data: { location: "/Data.xml" },
+    	dataType: "xml", 
+    	success: function(result){
+    		printTaskList(id,date.getMonth(),date.getFullYear(),result);
+   		}
+    });
+}
 function ajaxDebug(){
 	
 	 $.ajax({
@@ -82,45 +84,107 @@ function printTaskList(d,m,y,result){
 	m=m+1;
 	 $(".inc").hide();
 	document.getElementById("q").innerHTML = '<br> '+ m+"/" + d+"/"+ y+ '<br> &nbsp;';
-	document.getElementById("q").innerHTML += '<button type="button" onclick="printCalender()">back to calender</button>';
+	
+		var btn = document.createElement("button");
+	    	btn.innerHTML = "back to calender";
+	    	btn.onclick =  function(){ printCalender();};
+	document.getElementById("q").appendChild(btn);	
+			
 	document.getElementById("calender").innerHTML = '';
 	document.getElementById("myDiv").innerHTML = '';
 	var taskTxt = '';
 	//boolean if atleast 1 event occured
 	var GTOneTask = false;
+	var counter = 1;
 	//for each task...
 	$(result).find('task').each(function(){
 		//print all tasks that fall on this date
 		if($(this).find('day').text() == d && $(this).find('year').text() == y && $(this).find('month').text() == m){
 			GTOneTask = true;
+			var task = 'task'+counter;
+			 $("#calender").append("<div id = "+ task +">hello world</div>")
 			var title = $(this).find('title').text();
 			var desc = $(this).find('description').text();
 			
 			var txt = '<ul><li><b>'+title+'</b></li>';
-			txt += '<li>' + desc +'</li></ul>';
+			if(desc){
+				txt += '<li>' + desc +'</li>';
+			}
+			txt += '</ul>';
 
-	        $("#calender").append(txt);
+			$("#"+task).html(txt);
+			$("#"+task).on({
+			    click: function(){
+			    	if (confirm("Delete this event?") == true) {
+			    		$.ajax({
+			    	    	type:"POST", 
+			    	    	url: '/planner/removeXML/', 
+			    	    	data: { location: "/Data.xml", day: d, month: m, year: y, title: title, description: desc },
+			    	    	dataType: "text", 
+			    	    	error: function(){
+			    	    		alert("error has occured");
+			    	    		printCalender();
+			    	   		},
+			    	    	complete: function(){
+			    	    		ajaxTaskList(d);
+			    	   		}
+			    	    });
+			        }
+			    }, 
+			    mouseenter: function(){
+			        $(this).css("background-color", "lightgray");
+			    },
+			    mouseleave: function(){
+			        $(this).css("background-color", "white");
+			    }
+			});
+			counter++;
 		}
         
     });
 	if(!GTOneTask){
 		$("#calender").append("<br><br>Nothing planned today <br> Make some new plans by clicking <b>'new task'</b><br><br>");
+	}else{
+		$("#calender").append("Hint: Click on event to delete it<br><br>");
 	}
-	$("#calender").append('<br><button type="button" onclick="alert(\'TODO\')">New task</button>');
+	
+	var btn2 = document.createElement("button");
+		btn2.innerHTML = "New task";
+		btn2.onclick =  function(){ newTask(d,m,y);
+										$(this).hide();
+									};
+	document.getElementById("calender").appendChild(btn2);	
 }
-/*  TODO:
-function newTask(d,m,y,result){
+
+function newTask(d,m,y){
 	var text = '';
-	text += "<form action=' '>
-			'<br>Task title: <input type="text" name="FirstName" value="Title"><br>'
-			'Task description: <textarea name="myTextBox" cols="50" rows="5"> Enter some text... </textarea><br><br>'
-			'<input type="submit" value="Submit"><br><br>'
-			'</form>";
+	text += '<fieldset><form action="" id="taskForm">'
+	text +='<br>Task title: <input type="text" id="title" placeholder="title" required><br>'
+	text +='Task description: <textarea id="desc" placeholder="task description" cols="50" rows="5"></textarea><br><br>'
+	text +='<input type="submit" value="Submit"><br>'
+	text +='</form></fieldset><br><br>';
 	$("#calender").append(text);
 	
-}*/
-
-
+	$("#taskForm").submit(function(e){
+		e.preventDefault();
+		var titlee = $("#title").val();
+		var descc = $("#desc").val();
+		$.ajax({
+	    	type:"POST", 
+	    	url: '/planner/writeXML/', 
+	    	data: { location: "/Data.xml", day: d, month: m, year: y, title: titlee, description: descc },
+	    	dataType: "text", 
+	    	error: function(){
+	    		alert("error has occured");
+	    		printCalender();
+	   		},
+	    	complete: function(){
+	    		ajaxTaskList(d);
+	   		}
+	    });
+	    
+	});
+}	
 
 function printCalender(){
 	month_names = new Array("January","February","March","April","May","June","July",
@@ -224,3 +288,4 @@ var decreaseMonth = function(){
 
 </body>
 </html>
+
